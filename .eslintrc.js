@@ -8,6 +8,7 @@ module.exports = {
     browser: true,
     node: true
   },
+  extends: 'google',
   globals: {
     __static: true
   },
@@ -16,6 +17,8 @@ module.exports = {
   ],
   'rules': {
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'max-len': ["error", { "code": 140 }],
+    'require-jsdoc': ["off"],
   }
 }

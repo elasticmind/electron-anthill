@@ -6,8 +6,8 @@
 
 <script>
   export default {
-    name: 'electron-anthill'
-  }
+    name: 'electron-anthill',
+  };
 </script>
 
 <style>
