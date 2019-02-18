@@ -40,7 +40,6 @@ function logStats (proc, data) {
 
 function startRenderer () {
   return new Promise((resolve, reject) => {
-    rendererConfig.entry.renderer = [path.join(__dirname, 'dev-client')].concat(rendererConfig.entry.renderer)
     rendererConfig.mode = 'development'
     const compiler = webpack(rendererConfig)
     hotMiddleware = webpackHotMiddleware(compiler, {
@@ -73,13 +72,12 @@ function startRenderer () {
       }
     )
 
-    server.listen(9080)
+    server.listen(9081)
   })
 }
 
 function startMain () {
   return new Promise((resolve, reject) => {
-    mainConfig.entry.main = [path.join(__dirname, '../src/main/index.dev.js')].concat(mainConfig.entry.main)
     mainConfig.mode = 'development'
     const compiler = webpack(mainConfig)
 
@@ -175,10 +173,10 @@ function greeting () {
   console.log(chalk.blue('  getting ready...') + '\n')
 }
 
-function init () {
+function start () {
   greeting()
 
-  Promise.all([startRenderer(), startMain()])
+  return Promise.all([startRenderer(), startMain()])
     .then(() => {
       startElectron()
     })
@@ -187,4 +185,6 @@ function init () {
     })
 }
 
-init()
+module.exports = {
+  start,
+};

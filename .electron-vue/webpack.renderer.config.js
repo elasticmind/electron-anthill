@@ -20,7 +20,7 @@ const { VueLoaderPlugin } = require('vue-loader')
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
 let whiteListedModules = ['vue']
-
+console.log('XXXXXXX', path.resolve(__dirname, '..', 'node_modules', 'babel-loader', 'lib', 'index.js'));
 let rendererConfig = {
   devtool: '#cheap-module-eval-source-map',
   entry: {
@@ -32,31 +32,36 @@ let rendererConfig = {
   module: {
     rules: [
       {
-        test: /\.(js|vue)$/,
-        enforce: 'pre',
-        exclude: /node_modules/,
-        use: {
-          loader: 'eslint-loader',
-          options: {
-            formatter: require('eslint-friendly-formatter')
-          }
-        }
-      },
-      {
         test: /\.scss$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader']
+        use: [{
+          loader: path.resolve(__dirname, '..', 'node_modules', 'vue-style-loader', 'index.js'),
+        }, {
+          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'index.js'),
+        }, 'sass-loader']
       },
       {
         test: /\.sass$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax']
+        use: [{
+          loader: path.resolve(__dirname, '..', 'node_modules', 'vue-style-loader', 'index.js'),
+        }, {
+          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'index.js'),
+        }, 'sass-loader?indentedSyntax']
       },
       {
         test: /\.less$/,
-        use: ['vue-style-loader', 'css-loader', 'less-loader']
+        use: [{
+          loader: path.resolve(__dirname, '..', 'node_modules', 'vue-style-loader', 'index.js'),
+        }, {
+          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'index.js'),
+        }, 'less-loader']
       },
       {
         test: /\.css$/,
-        use: ['vue-style-loader', 'css-loader']
+        use: [{
+          loader: path.resolve(__dirname, '..', 'node_modules', 'vue-style-loader', 'index.js'),
+        }, {
+          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'index.js'),
+        }]
       },
       {
         test: /\.html$/,
@@ -64,17 +69,17 @@ let rendererConfig = {
       },
       {
         test: /\.js$/,
-        use: 'babel-loader',
+        use: [
+          {
+            loader: path.resolve(__dirname, '..', 'node_modules', 'babel-loader', 'lib', 'index.js'),
+          }
+        ],
         exclude: /node_modules/
-      },
-      {
-        test: /\.node$/,
-        use: 'node-loader'
       },
       {
         test: /\.vue$/,
         use: {
-          loader: 'vue-loader',
+          loader: path.resolve(__dirname, '..', 'node_modules', 'vue-loader', 'lib', 'index.js'),
           options: {
             extractCSS: process.env.NODE_ENV === 'production',
             loaders: {
@@ -88,7 +93,7 @@ let rendererConfig = {
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: {
-          loader: 'url-loader',
+          loader: path.resolve(__dirname, '..', 'node_modules', 'url-loader', 'dist', 'cjs.js'),
           query: {
             limit: 10000,
             name: 'imgs/[name]--[folder].[ext]'
@@ -97,7 +102,7 @@ let rendererConfig = {
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        loader: 'url-loader',
+        loader: path.resolve(__dirname, '..', 'node_modules', 'url-loader', 'dist', 'cjs.js'),
         options: {
           limit: 10000,
           name: 'media/[name]--[folder].[ext]'
@@ -106,7 +111,7 @@ let rendererConfig = {
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         use: {
-          loader: 'url-loader',
+          loader: path.resolve(__dirname, '..', 'node_modules', 'url-loader', 'dist', 'cjs.js'),
           query: {
             limit: 10000,
             name: 'fonts/[name]--[folder].[ext]'

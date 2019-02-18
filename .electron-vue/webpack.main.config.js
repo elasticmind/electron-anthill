@@ -18,24 +18,13 @@ let mainConfig = {
   module: {
     rules: [
       {
-        test: /\.(js)$/,
-        enforce: 'pre',
-        exclude: /node_modules/,
-        use: {
-          loader: 'eslint-loader',
-          options: {
-            formatter: require('eslint-friendly-formatter')
-          }
-        }
-      },
-      {
         test: /\.js$/,
-        use: 'babel-loader',
+        use: [
+          {
+            loader: path.resolve(__dirname, '..', 'node_modules', 'babel-loader', 'lib', 'index.js'),
+          }
+        ],
         exclude: /node_modules/
-      },
-      {
-        test: /\.node$/,
-        use: 'node-loader'
       }
     ]
   },
