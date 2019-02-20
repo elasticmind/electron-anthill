@@ -20,7 +20,6 @@ const { VueLoaderPlugin } = require('vue-loader')
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
 let whiteListedModules = ['vue']
-console.log('XXXXXXX', path.resolve(__dirname, '..', 'node_modules', 'babel-loader', 'lib', 'index.js'));
 let rendererConfig = {
   devtool: '#cheap-module-eval-source-map',
   entry: {
