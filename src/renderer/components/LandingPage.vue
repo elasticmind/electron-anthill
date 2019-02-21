@@ -1,50 +1,37 @@
 <template>
-  <div id="wrapper">
-    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-    <div class="main">
-      <div class="left-side">
-        <span class="title">
-          Welcome to anthill!
-        </span>
-      </div>
-
-      <div class="right-side">
-        <div class="doc">
-          <div class="title">Getting Started</div>
-            <p>
-              {{ sources }}
-            </p>
-          </div>
-        </div>
-      </div>
+  <div class="wrapper">
+    <div class="source-pane" v-for="(events, source) in history" :key="source">
+      <h2>
+        {{ source }}
+      </h2>
+      <ul>
+        <li v-for="(eventData, index) in events" :key="index">
+          <h5>
+            {{ eventData.channel }}, ({{ eventData.timestamp }})
+          </h5>
+          <pre>
+            {{ eventData.stack }}
+          </pre>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'landing-page',
-    data() {
-      return {
-        sources: [],
-      };
+export default {
+  name: 'landing-page',
+  data() {
+    return {
+      sources: [],
+    };
+  },
+  computed: {
+    history() {
+      return this.$store.state.events.history;
     },
-    mounted() {
-      const websocket = new WebSocket('ws://localhost:8080');
-      websocket.onerror = function(event) {
-        console.log('ERROR', JSON.stringify(event, null, 2));
-      };
-      websocket.onopen = function(event) {
-        console.log('RENDERER: client opened');
-      };
-      websocket.onclose = function(event) {
-        console.log('RENDERER: client closed');
-      };
-      websocket.onmessage = function(event) {
-        console.log('RENDERER: client recieved:', event.data);
-      };
-    },
-  };
+  },
+};
 </script>
 
 <style>
@@ -58,75 +45,26 @@
 
   body { font-family: 'Source Sans Pro', sans-serif; }
 
-  #wrapper {
-    background:
-      radial-gradient(
-        ellipse at top left,
-        rgba(255, 255, 255, 1) 40%,
-        rgba(229, 229, 229, .9) 100%
-      );
-    height: 100vh;
-    padding: 60px 80px;
-    width: 100vw;
-  }
-
-  #logo {
-    height: auto;
-    margin-bottom: 20px;
-    width: 420px;
-  }
-
-  .main {
+  .wrapper {
+    background-color:rgb(229, 229, 229);
+    padding: 40px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
   }
 
-  .main > div { flex-basis: 50%; }
-
-  .left-side {
-    display: flex;
-    flex-direction: column;
+  .source-pane {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin: 10px;
+    overflow: auto;
   }
 
-  .welcome {
-    color: #555;
-    font-size: 23px;
-    margin-bottom: 10px;
+  .source-pane pre {
+    width: 100%;
+    overflow-x: scroll;
   }
 
-  .title {
-    color: #2c3e50;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 6px;
-  }
-
-  .title.alt {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .doc p {
-    color: black;
-    margin-bottom: 10px;
-  }
-
-  .doc button {
-    font-size: .8em;
-    cursor: pointer;
-    outline: none;
-    padding: 0.75em 2em;
-    border-radius: 2em;
-    display: inline-block;
-    color: #fff;
-    background-color: #4fc08d;
-    transition: all 0.15s ease;
-    box-sizing: border-box;
-    border: 1px solid #4fc08d;
-  }
-
-  .doc button.alt {
-    color: #42b983;
-    background-color: transparent;
+  ul {
+    list-style-type: none;
   }
 </style>

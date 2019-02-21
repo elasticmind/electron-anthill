@@ -16,3 +16,11 @@ new Vue({
   store,
   template: '<App/>',
 }).$mount('#app');
+
+const pollInterval = 300;
+
+(async function poll() {
+  const response = await axios.get('http://localhost:8000');
+  store.dispatch('addBulk', response.data);
+  setTimeout(poll, pollInterval);
+})();

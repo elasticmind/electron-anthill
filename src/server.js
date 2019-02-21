@@ -1,33 +1,49 @@
-const WebSocket = require('ws');
 const path = require('path');
+const request = require('request');
 const electron = require(path.resolve(__dirname, '../node_modules/electron'));
-const {spawn} = require('child_process');
+const {spawn, fork} = require('child_process');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
+const {performance} = require('perf_hooks');
 
-let connectedWs;
+function post(object) {
+  return request({
+    uri: 'http://localhost:8000/',
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+    },
+    json: object,
+  });
+}
+
+function stackFormatter(stack) {
+  return stack;
+  // return stack.slice(8).replace(/at /g, '\nat ');
+}
 
 function init() {
-  const wss = new WebSocket.Server({host: '127.0.0.1', port: 8080});
-
-  wss.on('connection', function connection(ws) {
-    log('SERVER: connection built');
-    connectedWs = ws;
-  });
+  fork(path.resolve(__dirname, 'restApi.js'));
 
   return start();
 }
 
-function register(source) {
+function register({source, sourceName}) {
   if (!(source && source.on)) {
-    log('Something went wrong registering an eventBus...');
+    console.log('Something went wrong registering an eventBus...');
+    return;
   }
   const old = source.on;
   source.on = function(channel, listener) {
-    log('Registering a listener on', channel);
+    console.log('Registering a listener on', channel);
     function newListener(...args) {
-      log('holly cow this works!', channel);
-      connectedWs && connectedWs.send('something happened ' + channel);
+      const toSend = {
+        source: sourceName,
+        channel: channel,
+        timestamp: performance.now(),
+        stack: stackFormatter((new Error()).stack),
+      };
+      post(toSend);
       return listener(...args);
     }
     old.call(source, channel, newListener);
