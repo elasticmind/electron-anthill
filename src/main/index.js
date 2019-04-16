@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from 'electron';
+const {deinit} = require('./server');
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
@@ -34,6 +35,8 @@ function createWindow() {
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
+  deinit();
+
   if (process.platform !== 'darwin') {
     app.quit();
   }

@@ -1,53 +1,91 @@
 const path = require('path');
-const request = require('request');
 const electron = require(path.resolve(__dirname, '../node_modules/electron'));
 const {spawn, fork} = require('child_process');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const {performance} = require('perf_hooks');
+const {post} = require('./helper');
 
-function post(object) {
-  return request({
-    uri: 'http://localhost:8000/',
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-    },
-    json: object,
-  });
-}
-
-function stackFormatter(stack) {
-  return stack;
-  // return stack.slice(8).replace(/at /g, '\nat ');
-}
+let server;
 
 function init() {
-  fork(path.resolve(__dirname, 'restApi.js'));
+  server = fork(path.resolve(__dirname, 'restApi.js'));
 
   return start();
 }
 
-function register({source, sourceName}) {
-  if (!(source && source.on)) {
-    console.log('Something went wrong registering an eventBus...');
+function deinit() {
+  server.kill();
+}
+
+/*
+Register signature:
+{
+  source // The emitter/bus on which the method to be intercepted is
+  method // The method to be intercepted
+  category // The main category of the interception, used for node grouping in the graph representation
+  subcategory // The subcategory of the interception, used for further differentiation inside the category
+  interceptionStrategy // A function that handles the interception process. Provided: on, send
+}
+
+Messaging signature:
+{
+  category // The main category of the interception, used for node grouping in the graph representation
+  subcategory // The subcategory of the interception, used for further differentiation inside the category
+  channel // The messaging channel the report is about
+  timestamp // Timestamp of calling the registered method
+}
+*/
+const interceptionStrategyNames = {
+  on: 'on',
+  send: 'send',
+};
+
+function register({source, method, category, subcategory, interceptionStrategyName}) {
+  if (!(source && source[method])) {
+    console.log(`Could not register ${method} of ${source}`);
     return;
   }
-  const old = source.on;
-  source.on = function(channel, listener) {
-    console.log('Registering a listener on', channel);
-    function newListener(...args) {
-      const toSend = {
-        source: sourceName,
-        channel: channel,
-        timestamp: performance.now(),
-        stack: stackFormatter((new Error()).stack),
+
+  const interceptionStrategies = {
+    [interceptionStrategyNames.on](f) {
+      return function(channel, listener) {
+        function newListener(...args) {
+          const toSend = {
+            category,
+            subcategory,
+            channel,
+            timestamp: performance.now(),
+            interceptionStrategy: interceptionStrategyNames.on,
+          };
+          post(toSend);
+          return listener(...args);
+        }
+        f.call(source, channel, newListener);
       };
-      post(toSend);
-      return listener(...args);
-    }
-    old.call(source, channel, newListener);
+    },
+    [interceptionStrategyNames.send](f) {
+      return function(channel, payload) {
+        const toSend = {
+          category,
+          subcategory,
+          channel,
+          payload,
+          timestamp: performance.now(),
+          interceptionStrategy: interceptionStrategyNames.send,
+        };
+        post(toSend);
+        f.call(source, channel, payload);
+      };
+    },
   };
+
+  const interceptionStrategy = interceptionStrategies[interceptionStrategyName];
+  console.log(`Registering ${method} of ${source}:
+    category: ${category},
+    subcategory: ${subcategory},
+    interception strategy: ${interceptionStrategy}.`);
+  source[method] = interceptionStrategy(source[method]);
 }
 
 function startDevServer() {
@@ -124,5 +162,7 @@ function log(data) {
 
 module.exports = {
   init,
+  deinit,
   register,
+  interceptionStrategyNames,
 };

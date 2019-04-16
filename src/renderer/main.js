@@ -20,7 +20,11 @@ new Vue({
 const pollInterval = 300;
 
 (async function poll() {
-  const response = await axios.get('http://localhost:8000');
-  store.dispatch('addBulk', response.data);
-  setTimeout(poll, pollInterval);
+  try {
+    const response = await axios.get('http://localhost:8000');
+    store.dispatch('addBulk', response.data);
+    setTimeout(poll, pollInterval);
+  } catch (error) {
+    console.log('Lost connection to local server of Anthill', error);
+  }
 })();
