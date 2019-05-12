@@ -9,7 +9,7 @@ init();
   const category = `category ${i % 4 < 2 ? 1 : 2}`;
   const subcategoryNumber = i % 2 === 0 ? 1 : 2;
   const subcategory = `subcategory ${subcategoryNumber}`;
-  const channel = `channel ${1 || (i % 8 < 4 ? 1 : 2)}`;
+  const channel = `channel ${i % 8 < 4 ? 1000 : 2}`;
   const toSend = {
     category,
     subcategory,

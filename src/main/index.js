@@ -1,5 +1,7 @@
-import {app, BrowserWindow} from 'electron';
-const {deinit} = require('./server');
+import {app, BrowserWindow, Menu, dialog, ipcMain} from 'electron';
+import fs from 'fs';
+import * as logHelper from './logHelper';
+import * as events from '../events';
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
@@ -22,7 +24,6 @@ function createWindow() {
 
   const installExtension = require('electron-devtools-installer');
   installExtension.default(installExtension.VUEJS_DEVTOOLS)
-      .then(() => {})
       .catch((err) => {
         console.log('Unable to install `vue-devtools`: \n', err);
       });
@@ -35,8 +36,6 @@ function createWindow() {
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
-  deinit();
-
   if (process.platform !== 'darwin') {
     app.quit();
   }
@@ -47,3 +46,46 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+let saveLogPath;
+
+ipcMain.on(events.EVENTS_AND_SAVE, (event, events) => {
+  if (saveLogPath) {
+    console.log(logHelper.transformEvents(events));
+    fs.writeFile(saveLogPath, logHelper.transformEvents(events));
+  }
+});
+
+const template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'Save log',
+        click() {
+          dialog.showSaveDialog(mainWindow, {}, function saveHandler(filePath) {
+            if (filePath) {
+              saveLogPath = filePath;
+              mainWindow.webContents.send(events.GET_EVENTS);
+            }
+          });
+        },
+      },
+    ],
+  },
+  {
+    label: 'Development',
+    submenu: [
+      {
+        label: 'Development Tools',
+        accelerator: 'CmdOrCtrl+Shift+I',
+        click() {
+          mainWindow.webContents.toggleDevTools();
+        },
+      },
+    ],
+  },
+];
+
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);

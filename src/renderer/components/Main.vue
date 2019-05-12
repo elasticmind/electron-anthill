@@ -1,35 +1,38 @@
 <template>
   <div class="wrapper">
-    <div class="graph-wrapper">
+    <!--<div class="graph-wrapper">
       <svg width="800" height="600"/>
-    </div>
-    <div class="source-pane">
-      <h1>nodes</h1>
-      <ul>
-        <li v-for="(event, index) in graph.nodes" :key="index">
-          <h3>{{ index + 1 }}</h3>
-          <p>{{ event.category }}, {{ event.subcategory }}, {{ event.channel }}</p>
-        </li>
-      </ul>
-      <h1>links</h1>
-      <ul>
-        <li v-for="(eventLink, index) in graph.links" :key="index">
-          <h3>{{ index + 1 }}</h3>
-          <p>{{ eventLink.source.category }}, {{ eventLink.source.subcategory }}, {{ eventLink.source.channel }}</p>
-          <p>{{ eventLink.target.category }}, {{ eventLink.target.subcategory }}, {{ eventLink.target.channel }}</p>
-        </li>
-      </ul>
+    </div>-->
+    <div class="w-half flex flex-h">
+      <div class="w-half of-scroll">
+        <event-list :events="events"/>
+      </div>
+      <div class="w-half flex flex-v">
+        <div class="h-half">
+            <events-options />
+        </div>
+        <div class="h-half">
+          <event-details :event="selectedEvent" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import * as d3 from 'd3';
+import EventDetails from '@/components/EventDetails';
+import EventList from '@/components/EventList';
+import EventsOptions from '@/components/EventsOptions';
 
 let restart = () => {};
 
 export default {
-  name: 'landing-page',
+  components: {
+    EventDetails,
+    EventList,
+    EventsOptions,
+  },
   data() {
     return {
       sources: [],
@@ -45,11 +48,16 @@ export default {
     graph() {
       return this.$store.getters.graph;
     },
-    absoluteHistory() {
-      return this.$store.state.events.absoluteHistory;
+    events() {
+      return this.$store.getters.filteredEvents;
+    },
+    selectedEvent() {
+      return this.$store.state.events.selectedEvent;
     },
   },
   mounted() {
+    return;
+
     const svg = d3.select('svg');
     const width = +svg.attr('width');
     const height = +svg.attr('height');
@@ -141,7 +149,8 @@ export default {
       node = node.data(this.graph.nodes);
       node.exit().remove();
       node = node
-          .enter().append('circle')
+          .enter()
+          .append('circle')
           .attr('r', 5)
           .attr('fill', function(d) {
             return color(d.group);
@@ -160,7 +169,10 @@ export default {
         return d.source.subcategory + '-' + d.target.subcagetory;
       });
       link.exit().remove();
-      link = link.enter().append('line').merge(link);
+      link = link
+          .enter()
+          .append('line')
+          .merge(link);
 
       // Update and restart the simulation.
       // console.log('nodes', this.graph.nodes);
@@ -231,10 +243,9 @@ export default {
       return d.id;
     });
 
-
     simulation
         .nodes(this.graph.nodes)
-        // .on('tick', ticked)
+    // .on('tick', ticked)
         .force('link')
         .links(this.graph.links);
 
@@ -357,7 +368,7 @@ export default {
       d3.select(this) // eslint-disable-line
           .select('path')
           .style('stroke-width', 1);
-    };
+    }
   },
 };
 </script>
@@ -379,6 +390,8 @@ body {
   background-color: rgb(229, 229, 229);
   display: flex;
   flex-direction: row;
+  width: 100vw;
+  height: 100vh;
 }
 
 .source-pane {
@@ -386,6 +399,34 @@ body {
   flex-basis: 0;
   margin: 10px;
   overflow: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-h {
+  flex-direction: row;
+}
+
+.flex-v {
+  flex-direction: column;
+}
+
+.w-half {
+  width: 50%;
+}
+
+.h-half {
+  height: 50%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.of-scroll {
+  overflow-y: scroll;
 }
 
 .graph-wrapper {
@@ -414,7 +455,7 @@ ul {
 }
 
 path {
-  fill-opacity: .1;
+  fill-opacity: 0.1;
   stroke-opacity: 1;
 }
 

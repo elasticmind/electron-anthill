@@ -1,11 +1,31 @@
-import Vue from 'vue';
-
 const state = {
-  absoluteHistory: [],
-  preGraph: {},
+  events: [],
+  selectedEvent: null,
+  filterToggle: false,
+  selectedChannel: [],
+  selectedMin: 0,
+  selectedMax: 100,
+  options: {
+    channel: [],
+    timestamp: {
+      min: NaN,
+      max: NaN,
+    },
+  },
 };
 
 const getters = {
+  filteredEvents(state) {
+    if (!state.filterToggle) {
+      return state.events;
+    }
+
+    return state.events.filter((event) => {
+      return state.selectedChannel.includes(event.channel)
+        && state.selectedMin <= event.timestamp
+        && event.timestamp <= state.selectedMax;
+    });
+  },
   graph(state) {
     function isEventUniqueAmong(events, event) {
       return !events.some((uniqueEvent) => {
@@ -23,8 +43,8 @@ const getters = {
     }
 
     const groupDictionary = {};
-    const nodes = state.absoluteHistory.
-        reduce((events, event) => {
+    const nodes = state.events
+        .reduce((events, event) => {
           groupDictionary[event.category] = Object.keys(groupDictionary).length;
           if (isEventUniqueAmong(events, event)) {
             event.group = groupDictionary[event.category];
@@ -77,16 +97,43 @@ const mutations = {
     }
     state.preGraph[source][channel].push(timestamp);*/
 
-    state.absoluteHistory.push(event);
+    state.events.push(event);
+  },
+  select(state, event) {
+    state.selectedEvent = event;
+  },
+  recalculateOptions(state) {
+    state.options.category = unique(state.events.map((event) => event.category));
+    state.options.subcategory = unique(state.events.map((event) => event.subcategory));
+    state.options.channel = unique(state.events.map((event) => event.channel));
+    const timestamps = state.events.map((event) => event.timestamp);
+    state.options.timestamp.min = Math.min(...timestamps);
+    state.options.timestamp.max = Math.max(...timestamps);
+  },
+  setFilterToggle(state, shouldFilter) {
+    state.filterToggle = shouldFilter;
+  },
+  setSelectedChannel(state, channel) {
+    state.selectedChannel = channel;
+  },
+  setSelectedMin(state, timestamp) {
+    state.selectedMin = timestamp;
+  },
+  setSelectedMax(state, timestamp) {
+    state.selectedMax = timestamp;
   },
 };
 
 const actions = {
   add({commit, state}, event) {
     commit('add', event);
+    commit('recalculateOptions');
   },
-  addBulk({commit, state}, events) {
-    events.forEach((event) => commit('add', event));
+  addBulk({dispatch}, events) {
+    events.forEach((event) => dispatch('add', event));
+  },
+  select({commit}, event) {
+    commit('select', event);
   },
 };
 
@@ -96,3 +143,7 @@ export default {
   mutations,
   actions,
 };
+
+function unique(array) {
+  return [...(new Set(array))];
+}
