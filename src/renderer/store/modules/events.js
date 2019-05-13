@@ -44,24 +44,24 @@ const getters = {
 
     const groupDictionary = {};
     const nodes = state.events
-        .reduce((events, event) => {
-          groupDictionary[event.category] = Object.keys(groupDictionary).length;
-          if (isEventUniqueAmong(events, event)) {
-            event.group = groupDictionary[event.category];
-            events.push(event);
-          }
+      .reduce((events, event) => {
+        groupDictionary[event.category] = Object.keys(groupDictionary).length;
+        if (isEventUniqueAmong(events, event)) {
+          event.group = groupDictionary[event.category];
+          events.push(event);
+        }
 
-          return events;
-        }, []);
+        return events;
+      }, []);
 
     const subcategoryAgnosticNodes = nodes
-        .reduce((events, event) => {
-          if (isEventUniqueAmongSubcategoryAgnostic(events, event)) {
-            events.push(event);
-          }
+      .reduce((events, event) => {
+        if (isEventUniqueAmongSubcategoryAgnostic(events, event)) {
+          events.push(event);
+        }
 
-          return events;
-        }, []);
+        return events;
+      }, []);
 
     const sendNodes = nodes.filter((node) => node.interceptionStrategy === 'send');
     const onNodes = nodes.filter((node) => node.interceptionStrategy === 'on');
