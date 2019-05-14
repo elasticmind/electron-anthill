@@ -5,7 +5,7 @@
 <script>
 import * as d3 from 'd3';
 
-let restart = () => {};
+const restart = () => {};
 
 export default {
   data() {
@@ -19,6 +19,7 @@ export default {
           {'id': 'CountessdeLo', 'group': 1},
         ],
         links: [
+          {'source': 'Myriel', 'target': 'Napoleon', 'value': 1},
           {'source': 'Napoleon', 'target': 'Myriel', 'value': 1},
           {'source': 'Mlle.Baptistine', 'target': 'Myriel', 'value': 8},
           {'source': 'Mme.Magloire', 'target': 'Myriel', 'value': 10},
@@ -102,18 +103,31 @@ export default {
     // create groups, links and nodes
     const groups = svg.append('g').attr('class', 'groups');
 
-    let link = svg
+    svg.append('svg:defs').selectAll('marker')
+      .data(['end']) // Different link/path types can be defined here
+      .enter().append('svg:marker') // This section adds in the arrows
+      .attr('id', String)
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 15)
+      .attr('refY', -1.5)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('class', 'arrowhead')
+      .attr('d', 'M0,-5L10,0L0,5');
+
+    const link = svg
       .append('g')
       .attr('class', 'links')
       .selectAll('line')
       .data(this.graph.links)
       .enter()
-      .append('line')
-      .attr('stroke-width', function(d) {
-        return Math.sqrt(d.value);
-      });
+      .append('svg:path')
+      .attr('class', 'link')
+      .attr('marker-end', 'url(#end)');
 
-    let node = svg
+    const node = svg
       .append('g')
       .attr('class', 'nodes')
       .selectAll('circle')
@@ -131,45 +145,6 @@ export default {
           .on('drag', dragged)
           .on('end', dragended)
       );
-
-    restart = ({nodeChanges, linkChanges}) => {
-      // Apply the general update pattern to the nodes.
-      node = node.data(nodeChanges);
-      // node.exit().remove();
-      node = node
-        .enter()
-        .append('circle')
-        .attr('r', 5)
-        .attr('fill', function(d) {
-          return color(d.group);
-        })
-        .call(
-          d3
-            .drag()
-            .on('start', dragstarted)
-            .on('drag', dragged)
-            .on('end', dragended)
-        )
-        .merge(node);
-
-      // Apply the general update pattern to the links.
-      link = link.data(linkChanges, function(d) {
-        return d.source.subcategory + '-' + d.target.subcagetory;
-      });
-      // link.exit().remove();
-      link = link
-        .enter()
-        .append('line')
-        .merge(link);
-
-      // Update and restart the simulation.
-      // console.log('nodes', this.graph.nodes);
-      console.log('nodes', this.graph.nodes);
-      console.log('links', this.graph.links);
-      simulation.nodes(this.graph.nodes);
-      simulation.force('link').links(this.graph.links);
-      simulation.alpha(1).restart();
-    };
 
     // count members of each group. Groups with less
     // than 3 member will not be considered (creating
@@ -231,11 +206,53 @@ export default {
       return d.id;
     });
 
+    link.append('title').text(function(d) {
+      return d.value;
+    });
+
     simulation
       .nodes(this.graph.nodes)
-      // .on('tick', ticked)
+      .on('tick', ticked)
       .force('link')
       .links(this.graph.links);
+
+    function ticked() {
+      link
+        .attr('x1', function(d) {
+          return d.source.x;
+        })
+        .attr('y1', function(d) {
+          return d.source.y;
+        })
+        .attr('x2', function(d) {
+          return d.target.x;
+        })
+        .attr('y2', function(d) {
+          return d.target.y;
+        });
+
+      link.attr('d', function(d) {
+        const dx = d.target.x - d.source.x;
+        const dy = d.target.y - d.source.y;
+        const dr = Math.sqrt(dx * dx + dy * dy);
+        return 'M' +
+            d.source.x + ',' +
+            d.source.y + 'A' +
+            dr + ',' + dr + ' 0 0,1 ' +
+            d.target.x + ',' +
+            d.target.y;
+      });
+
+      node
+        .attr('cx', function(d) {
+          return d.x;
+        })
+        .attr('cy', function(d) {
+          return d.y;
+        });
+
+      updateGroups();
+    }
 
     // select nodes of the group, retrieve its positions
     // and return the convex hull of the specified points
@@ -309,7 +326,7 @@ export default {
     // drag groups
     function groupDragStarted(groupId) {
       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d3.select(this) // eslint-disable-line
+      d3.select(this)
         .select('path')
         .style('stroke-width', 3);
     }
@@ -327,7 +344,7 @@ export default {
 
     function groupDragEnded(groupId) {
       if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d3.select(this) // eslint-disable-line
+      d3.select(this)
         .select('path')
         .style('stroke-width', 1);
     }
@@ -349,5 +366,16 @@ export default {
 path {
   fill-opacity: 0.1;
   stroke-opacity: 1;
+}
+
+path.link {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+.arrowhead {
+  fill: black;
+  fill-opacity: 1;
 }
 </style>
