@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button @click="refreshGraph">Refresh Graph</button>
     <h1>
       Events
     </h1>
@@ -24,6 +25,9 @@ export default {
     },
   },
   methods: {
+    refreshGraph() {
+      this.$store.commit('incrementGraphRenderCount');
+    },
     click(clickedEvent) {
       this.$store.dispatch('select', clickedEvent);
     },
