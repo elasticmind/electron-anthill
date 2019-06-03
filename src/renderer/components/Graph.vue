@@ -12,8 +12,8 @@ export default {
     },
   },
   mounted() {
-    const width = 300;
-    const height = 300;
+    const width = 600;
+    const height = 800;
 
     const svg = d3
       .select('.graph-wrapper')
@@ -39,6 +39,9 @@ export default {
       'curveCatmullRomClosed',
       'curveLinearClosed',
     ];
+
+    const forceX = d3.forceX(width / 2).strength(0.02);
+    const forceY = d3.forceY(height / 2).strength(0.02);
     const simulation = d3
       .forceSimulation()
       .force(
@@ -48,7 +51,8 @@ export default {
         })
       )
       .force('charge', d3.forceManyBody())
-      .force('center', d3.forceCenter(width / 2, height / 2));
+      .force('x', forceX)
+      .force('y', forceY);
 
     // create selector for curve types
     const select = d3
@@ -177,11 +181,11 @@ export default {
     );
 
     node.append('title').text(function(d) {
-      return d.id;
+      return `${d.category}, ${d.channel}`;
     });
 
     link.append('title').text(function(d) {
-      return d.value;
+      return d.channel;
     });
 
     simulation
@@ -335,10 +339,6 @@ export default {
 </script>
 
 <style>
-.graph-wrapper {
-  background-color: rgb(138, 182, 199);
-}
-
 .links line {
   stroke: #999;
   stroke-opacity: 0.6;
