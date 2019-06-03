@@ -3,23 +3,24 @@ const {init, interceptionStrategyNames} = require('./server');
 const {post} = require('./helper');
 let i = 0;
 
-init();
+(async function test() {
+  await init();
 
-(function postDummyData() {
-  const category = `category ${i % 4 < 2 ? 1 : 2}`;
-  const subcategoryNumber = i % 2 === 0 ? 1 : 2;
-  const subcategory = `subcategory ${subcategoryNumber}`;
-  const channel = `channel ${i % 8 < 4 ? 1000 : 2}`;
-  const toSend = {
-    category,
-    subcategory,
-    channel,
-    timestamp: performance.now(),
-    interceptionStrategy: subcategoryNumber === 1
-      ? interceptionStrategyNames.send
-      : interceptionStrategyNames.on,
-  };
-  post(toSend);
-  i++;
-  setTimeout(postDummyData, 500);
+  (function postDummyData() {
+    const category = i % 4 < 2 ? 'MAIN' : 'RENDERER';
+    const subcategory = (i % 4 === 0 || i % 4 === 3) ? 'send' : 'on';
+    const channel = String(i % 16 < 8 ? 11 : 12);
+    const toSend = {
+      category,
+      subcategory,
+      channel,
+      timestamp: performance.now(),
+      interceptionStrategy: subcategory === 'send'
+        ? interceptionStrategyNames.send
+        : interceptionStrategyNames.on,
+    };
+    post(toSend);
+    i++;
+    setTimeout(postDummyData, 500);
+  })();
 })();

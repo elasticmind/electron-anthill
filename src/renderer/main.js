@@ -24,9 +24,11 @@ ipcRenderer.on(events.GET_EVENTS, () => {
 });
 
 const pollInterval = 300;
+const i = 0;
 
 (async function poll() {
   try {
+    // const response = await time(axios.get('http://localhost:8000'), 'polling' + i++);
     const response = await axios.get('http://localhost:8000');
     store.dispatch('addBulk', response.data);
     setTimeout(poll, pollInterval);
@@ -34,3 +36,8 @@ const pollInterval = 300;
     console.log('Lost connection to local server of Anthill', error);
   }
 })();
+
+function time(p, msg) {
+  console.time(msg);
+  return p.then(() => console.timeEnd(msg));
+}

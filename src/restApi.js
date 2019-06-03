@@ -7,7 +7,7 @@ const queue = [];
 app.use(express.json());
 
 app.post('/', (req, res) => {
-  console.log('posting...');
+  // console.log('posting...');
   queue.push(req.body);
 });
 

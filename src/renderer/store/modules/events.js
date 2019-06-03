@@ -1,3 +1,5 @@
+import * as transformUtils from '../../../utils/transform';
+
 const state = {
   events: [],
   selectedEvent: null,
@@ -27,76 +29,12 @@ const getters = {
     });
   },
   graph(state) {
-    function isEventUniqueAmong(events, event) {
-      return !events.some((uniqueEvent) => {
-        return uniqueEvent.category === event.category
-          && uniqueEvent.subcategory === event.subcategory
-          && uniqueEvent.channel === event.channel;
-      });
-    }
-
-    function isEventUniqueAmongSubcategoryAgnostic(events, event) {
-      return !events.some((uniqueEvent) => {
-        return uniqueEvent.category === event.category
-          && uniqueEvent.channel === event.channel;
-      });
-    }
-
-    const groupDictionary = {};
-    const nodes = state.events
-      .reduce((events, event) => {
-        groupDictionary[event.category] = Object.keys(groupDictionary).length;
-        if (isEventUniqueAmong(events, event)) {
-          event.group = groupDictionary[event.category];
-          events.push(event);
-        }
-
-        return events;
-      }, []);
-
-    const subcategoryAgnosticNodes = nodes
-      .reduce((events, event) => {
-        if (isEventUniqueAmongSubcategoryAgnostic(events, event)) {
-          events.push(event);
-        }
-
-        return events;
-      }, []);
-
-    const sendNodes = nodes.filter((node) => node.interceptionStrategy === 'send');
-    const onNodes = nodes.filter((node) => node.interceptionStrategy === 'on');
-
-    const links = [];
-    sendNodes.forEach((source) => {
-      onNodes.forEach((target) => {
-        if (source.channel === target.channel && source.subcategory !== target.subcategory) {
-          links.push({
-            source,
-            target,
-            value: 1,
-          });
-        }
-      });
-    });
-
-    return {
-      nodes: subcategoryAgnosticNodes,
-      links,
-    };
+    return transformUtils.getSimplifiedData(state.events);
   },
 };
 
 const mutations = {
   add(state, event) {
-    /* const {source, channel, timestamp} = event;
-    if (!state.preGraph[source]) {
-      Vue.set(state.preGraph, source, {});
-    }
-    if (!state.preGraph[source][channel]) {
-      Vue.set(state.preGraph[source], channel, []);
-    }
-    state.preGraph[source][channel].push(timestamp);*/
-
     state.events.push(event);
   },
   select(state, event) {

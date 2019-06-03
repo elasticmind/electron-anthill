@@ -24,9 +24,9 @@ function createWindow() {
 
   const installExtension = require('electron-devtools-installer');
   installExtension.default(installExtension.VUEJS_DEVTOOLS)
-      .catch((err) => {
-        console.log('Unable to install `vue-devtools`: \n', err);
-      });
+    .catch((err) => {
+      console.log('Unable to install `vue-devtools`: \n', err);
+    });
 
   mainWindow.on('closed', () => {
     mainWindow = null;

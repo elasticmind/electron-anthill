@@ -1,3 +1,4 @@
+
 {
   "comments": false,
   "env": {
@@ -28,3 +29,9 @@
   },
   "plugins": ["transform-runtime"]
 }
+
+/*
+{
+  "presets": ["@babel/preset-env"]
+}
+*/

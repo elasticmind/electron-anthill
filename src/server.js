@@ -11,6 +11,8 @@ let server;
 function init() {
   server = fork(path.resolve(__dirname, 'restApi.js'));
 
+  process.on('exit', deinit);
+
   return start();
 }
 
@@ -91,11 +93,11 @@ function register({source, method, category, subcategory, interceptionStrategyNa
 function startDevServer() {
   return new Promise((resolve, reject) => {
     const server = new WebpackDevServer(
-        webpack({}),
-        {
-          contentBase: path.resolve(__dirname, '../dist/electron'),
-          quiet: true,
-        }
+      webpack({}),
+      {
+        contentBase: path.resolve(__dirname, '../dist/electron'),
+        quiet: true,
+      }
     );
 
     server.listen(9081, 'localhost', (error) => {
@@ -134,12 +136,12 @@ function startElectron() {
 
 function start() {
   return startDevServer()
-      .then(startElectron)
-      .then((electronProcess) => {
-        log('Anthill started!');
-        return electronProcess;
-      })
-      .catch((error) => console.log('Something went wrong while starting Anthill', error));
+    .then(startElectron)
+    .then((electronProcess) => {
+      log('Anthill started!');
+      return electronProcess;
+    })
+    .catch((error) => console.log('Something went wrong while starting Anthill', error));
 }
 
 // TODO: This log likes to silently swallow... (errors for example)
@@ -151,11 +153,11 @@ function log(data) {
   });
   if (/[0-9A-z]+/.test(log)) {
     console.log(
-        '┏ Anthill -------------------' +
-        '\n\n' +
-        log +
-        '┗ ----------------------------' +
-        '\n'
+      '┏ Anthill -------------------' +
+      '\n\n' +
+      log +
+      '┗ ----------------------------' +
+      '\n'
     );
   }
 }

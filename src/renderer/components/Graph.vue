@@ -5,40 +5,10 @@
 <script>
 import * as d3 from 'd3';
 
-const restart = () => {};
-
 export default {
-  data() {
-    return {
-      graph: {
-        nodes: [
-          {'id': 'Myriel', 'group': 1},
-          {'id': 'Napoleon', 'group': 1},
-          {'id': 'Mlle.Baptistine', 'group': 1},
-          {'id': 'Mme.Magloire', 'group': 1},
-          {'id': 'CountessdeLo', 'group': 1},
-        ],
-        links: [
-          {'source': 'Myriel', 'target': 'Napoleon', 'value': 1},
-          {'source': 'Napoleon', 'target': 'Myriel', 'value': 1},
-          {'source': 'Mlle.Baptistine', 'target': 'Myriel', 'value': 8},
-          {'source': 'Mme.Magloire', 'target': 'Myriel', 'value': 10},
-          {'source': 'Mme.Magloire', 'target': 'Mlle.Baptistine', 'value': 6},
-          {'source': 'CountessdeLo', 'target': 'Myriel', 'value': 1},
-        ],
-      },
-    };
-  },
   computed: {
-    graph2() {
+    graph() {
       return this.$store.getters.graph;
-    },
-  },
-  watch: {
-    graph2(oldGraph, newGraph) {
-      const nodeChanges = newGraph.nodes.filter((node) => !oldGraph.nodes.includes(node));
-      const linkChanges = newGraph.links.filter((link) => !oldGraph.links.includes(link));
-      return restart({nodeChanges, linkChanges});
     },
   },
   mounted() {
@@ -103,9 +73,12 @@ export default {
     // create groups, links and nodes
     const groups = svg.append('g').attr('class', 'groups');
 
-    svg.append('svg:defs').selectAll('marker')
+    svg
+      .append('svg:defs')
+      .selectAll('marker')
       .data(['end']) // Different link/path types can be defined here
-      .enter().append('svg:marker') // This section adds in the arrows
+      .enter()
+      .append('svg:marker') // This section adds in the arrows
       .attr('id', String)
       .attr('viewBox', '0 -5 10 10')
       .attr('refX', 15)
@@ -134,6 +107,7 @@ export default {
       .data(this.graph.nodes)
       .enter()
       .append('circle')
+      .attr('class', 'node')
       .attr('r', 5)
       .attr('fill', function(d) {
         return color(d.group);
@@ -235,12 +209,20 @@ export default {
         const dx = d.target.x - d.source.x;
         const dy = d.target.y - d.source.y;
         const dr = Math.sqrt(dx * dx + dy * dy);
-        return 'M' +
-            d.source.x + ',' +
-            d.source.y + 'A' +
-            dr + ',' + dr + ' 0 0,1 ' +
-            d.target.x + ',' +
-            d.target.y;
+        return (
+          'M' +
+          d.source.x +
+          ',' +
+          d.source.y +
+          'A' +
+          dr +
+          ',' +
+          dr +
+          ' 0 0,1 ' +
+          d.target.x +
+          ',' +
+          d.target.y
+        );
       });
 
       node
@@ -353,6 +335,10 @@ export default {
 </script>
 
 <style>
+.graph-wrapper {
+  background-color: rgb(138, 182, 199);
+}
+
 .links line {
   stroke: #999;
   stroke-opacity: 0.6;

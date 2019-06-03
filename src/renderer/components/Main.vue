@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
-    <graph />
+    <button @click="refreshGraph">Refresh Graph</button>
+    <graph :key="graphRenderCount"/>
     <div class="w-half flex flex-h">
       <div class="w-half of-scroll">
         <event-list :events="events"/>
@@ -33,6 +34,7 @@ export default {
   data() {
     return {
       sources: [],
+      graphRenderCount: 0,
     };
   },
   computed: {
@@ -41,6 +43,11 @@ export default {
     },
     selectedEvent() {
       return this.$store.state.events.selectedEvent;
+    },
+  },
+  methods: {
+    refreshGraph() {
+      this.graphRenderCount++;
     },
   },
 };
