@@ -6,18 +6,17 @@ const WebpackDevServer = require('webpack-dev-server');
 const {performance} = require('perf_hooks');
 const {post} = require('./helper');
 
+let electronProcess;
 let server;
 
 function init() {
   server = fork(path.resolve(__dirname, 'restApi.js'));
 
-  process.on('exit', deinit);
-
   return start();
 }
 
 function deinit() {
-  server.kill();
+  electronProcess.kill();
 }
 
 /*
@@ -122,7 +121,7 @@ function startElectron() {
 
   console.log('electron', electron);
   console.log('args', args);
-  const electronProcess = spawn(electron, args);
+  electronProcess = spawn(electron, args);
 
   electronProcess.stdout.on('data', (data) => {
     log(data);
@@ -130,6 +129,8 @@ function startElectron() {
   electronProcess.stderr.on('data', (data) => {
     log(data);
   });
+
+  electronProcess.on('exit', () => server.kill());
 
   return electronProcess;
 }

@@ -7,8 +7,8 @@ const queue = [];
 app.use(express.json());
 
 app.post('/', (req, res) => {
-  // console.log('posting...');
   queue.push(req.body);
+  res.end();
 });
 
 app.get('/', (req, res) => {
@@ -19,5 +19,3 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-app.on('event', (error) => console.log('Something really bad happened...', error));

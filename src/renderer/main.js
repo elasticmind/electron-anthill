@@ -24,7 +24,6 @@ ipcRenderer.on(events.GET_EVENTS, () => {
 });
 
 const pollInterval = 300;
-const i = 0;
 
 (async function poll() {
   try {
@@ -36,8 +35,3 @@ const i = 0;
     console.log('Lost connection to local server of Anthill', error);
   }
 })();
-
-function time(p, msg) {
-  console.time(msg);
-  return p.then(() => console.timeEnd(msg));
-}

@@ -8,5 +8,10 @@ module.exports.post = function(object) {
       'content-type': 'application/json',
     },
     json: object,
+  }, (error) => {
+    if (error) {
+      console.log('An error happened during posting the request', error);
+      process.exit(0);
+    }
   });
 };
