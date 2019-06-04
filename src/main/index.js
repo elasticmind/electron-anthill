@@ -77,6 +77,11 @@ const template = [
     label: 'Development',
     submenu: [
       {
+        label: 'Reload',
+        accelerator: 'CmdOrCtrl+R',
+        role: 'reload',
+      },
+      {
         label: 'Development Tools',
         accelerator: 'CmdOrCtrl+Shift+I',
         click() {
