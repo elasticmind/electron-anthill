@@ -22,6 +22,7 @@ import EventDetails from '@/components/EventDetails';
 import EventList from '@/components/EventList';
 import EventsOptions from '@/components/EventsOptions';
 import Graph from '@/components/Graph';
+import devState from '@/devState';
 
 export default {
   components: {
@@ -29,6 +30,9 @@ export default {
     EventList,
     EventsOptions,
     Graph,
+  },
+  mounted() {
+    this.$store.replaceState(devState);
   },
   data() {
     return {
