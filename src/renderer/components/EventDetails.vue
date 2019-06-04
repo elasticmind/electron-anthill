@@ -3,11 +3,22 @@
     <span slot="title">
       Details
     </span>
-    <ul>
-      <li v-for="(value, key) in event" :key="key">
-        <span>{{ key }}: {{ value }}</span>
-      </li>
-    </ul>
+    <p>
+      <span class="key">Category:&nbsp;</span>
+      <span>{{ event.category }}</span>
+    </p>
+    <p>
+      <span class="key">Subcategory:&nbsp;</span>
+      <span>{{ event.subcategory }}</span>
+    </p>
+    <p>
+      <span class="key">Channel:&nbsp;</span>
+      <span>{{ event.channel }}</span>
+    </p>
+    <p>
+      <span class="key">Timestamp:&nbsp;</span>
+      <span>{{ event.timestamp }}</span>
+    </p>
   </panel>
 </template>
 
@@ -26,6 +37,9 @@ export default {
 };
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.key {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
 </style>
