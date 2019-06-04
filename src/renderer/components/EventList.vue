@@ -4,7 +4,7 @@
       Events
     </span>
     <select class="event-selection" v-model="selectedEvents" multiple>
-      <option v-for="(event, index) in events" :key="index">
+      <option v-for="(event, index) in events" :key="index" :value="event">
         {{ event.category }} {{ event.subcategory }} {{ event.channel }}
       </option>
     </select>
@@ -40,8 +40,9 @@ export default {
 
 <style lang="scss" scoped>
 .event-selection {
-  height: 100%;
+  margin: auto;
   width: 100%;
   display: block;
+  flex-grow: 1;
 }
 </style>

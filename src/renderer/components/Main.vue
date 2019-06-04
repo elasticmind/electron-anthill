@@ -1,14 +1,14 @@
 <template>
   <div class="wrapper">
     <graph :key="graphRenderCount"/>
-    <div class="w-half flex flex-h">
-      <div class="w-half flex flex-v">
+    <div class="w-half flex flex-h bg-dark">
+      <div class="w-half flex flex-v brd-l">
         <refresh-graph class="refresh-graph-button"/>
         <event-list class="event-list" :events="events"/>
       </div>
-      <div class="w-half flex flex-v">
+      <div class="w-half flex flex-v brd-l">
         <events-options class="h-half"/>
-        <event-details class="h-half" :event="selectedEvent" />
+        <event-details class="h-half" :event="firstSelectedEvent" />
       </div>
     </div>
   </div>
@@ -42,8 +42,8 @@ export default {
     events() {
       return this.$store.getters.filteredEvents;
     },
-    selectedEvent() {
-      return this.$store.state.events.selectedEvent;
+    firstSelectedEvent() {
+      return this.$store.state.events.selectedEvents[0] || {};
     },
     graphRenderCount() {
       return this.$store.state.graph.graphRenderCount;
@@ -81,6 +81,10 @@ body {
   overflow: auto;
 }
 
+.brd-l {
+  border-left: 2px solid #404040;
+}
+
 .flex {
   display: flex;
 }
@@ -103,6 +107,10 @@ body {
 
 .h-full {
   height: 100%;
+}
+
+.bg-dark {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .refresh-graph-button {

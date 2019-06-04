@@ -10,8 +10,8 @@
 <style>
 .panel {
   padding: 5px;
-  border: 1px solid red;
-  box-shadow: 0 0 2px blue;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
