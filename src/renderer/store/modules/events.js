@@ -2,7 +2,7 @@ import * as transformUtils from '../../../utils/transform';
 
 const state = {
   events: [],
-  selectedEvent: null,
+  selectedEvents: [],
   filterToggle: false,
   selectedChannel: [],
   selectedMin: 0,
@@ -37,9 +37,6 @@ const mutations = {
   add(state, event) {
     state.events.push(event);
   },
-  select(state, event) {
-    state.selectedEvent = event;
-  },
   recalculateOptions(state) {
     state.options.category = unique(state.events.map((event) => event.category));
     state.options.subcategory = unique(state.events.map((event) => event.subcategory));
@@ -47,6 +44,9 @@ const mutations = {
     const timestamps = state.events.map((event) => event.timestamp);
     state.options.timestamp.min = Math.min(...timestamps);
     state.options.timestamp.max = Math.max(...timestamps);
+  },
+  setSelectedEvents(state, events) {
+    state.selectedEvents = events;
   },
   setFilterToggle(state, shouldFilter) {
     state.filterToggle = shouldFilter;
@@ -69,9 +69,6 @@ const actions = {
   },
   addBulk({dispatch}, events) {
     events.forEach((event) => dispatch('add', event));
-  },
-  select({commit}, event) {
-    commit('select', event);
   },
 };
 

@@ -4,11 +4,11 @@
     <h1>
       Events
     </h1>
-    <ul>
-      <li v-for="event in events">
-        <event-list-item :class="{'selected': isSelectedEvent(event)}" :event="event" @click.native="click(event)"/>
-      </li>
-    </ul>
+    <select v-model="selectedEvents" multiple>
+      <option v-for="(event, index) in events" :key="index">
+        {{ event.category }} {{ event.subcategory }} {{ event.channel }}
+      </option>
+    </select>
   </div>
 </template>
 
@@ -28,23 +28,16 @@ export default {
     refreshGraph() {
       this.$store.commit('incrementGraphRenderCount');
     },
-    click(clickedEvent) {
-      this.$store.dispatch('select', clickedEvent);
-    },
-    isSelectedEvent(event) {
-      return event === this.selectedEvent;
-    },
   },
   computed: {
-    selectedEvent() {
-      return this.$store.state.events.selectedEvent;
+    selectedEvents: {
+      set(events) {
+        this.$store.commit('setSelectedEvents', events);
+      },
+      get() {
+        return this.$store.state.events.selectedEvents;
+      },
     },
   },
 };
 </script>
-
-<style scoped>
-.selected {
-  background-color: red;
-}
-</style>
