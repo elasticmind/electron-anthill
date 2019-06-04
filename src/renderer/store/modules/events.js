@@ -29,7 +29,7 @@ const getters = {
     });
   },
   graph(state, getters) {
-    return transformUtils.getSimplifiedData(getters.filteredEvents);
+    return transformUtils.getSimplifiedData(getters.selectedEvents);
   },
 };
 
