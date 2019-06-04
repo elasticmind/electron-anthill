@@ -1,32 +1,28 @@
 <template>
-  <div>
-    <button @click="refreshGraph">Refresh Graph</button>
-    <h1>
+  <panel class="panel">
+    <span slot="title">
       Events
-    </h1>
-    <select v-model="selectedEvents" multiple>
+    </span>
+    <select class="event-selection" v-model="selectedEvents" multiple>
       <option v-for="(event, index) in events" :key="index">
         {{ event.category }} {{ event.subcategory }} {{ event.channel }}
       </option>
     </select>
-  </div>
+  </panel>
 </template>
 
 <script>
+import Panel from '@/components/Panel';
 import EventListItem from '@/components/EventListItem';
 
 export default {
   components: {
+    Panel,
     EventListItem,
   },
   props: {
     events: {
       type: Array,
-    },
-  },
-  methods: {
-    refreshGraph() {
-      this.$store.commit('incrementGraphRenderCount');
     },
   },
   computed: {
@@ -41,3 +37,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.event-selection {
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+</style>

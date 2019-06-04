@@ -2,8 +2,9 @@
   <div class="wrapper">
     <graph :key="graphRenderCount"/>
     <div class="w-half flex flex-h">
-      <div class="w-half of-scroll">
-        <event-list :events="events"/>
+      <div class="w-half flex flex-v">
+        <refresh-graph class="refresh-graph-button"/>
+        <event-list class="event-list" :events="events"/>
       </div>
       <div class="w-half flex flex-v">
         <div class="h-half">
@@ -22,6 +23,7 @@ import EventDetails from '@/components/EventDetails';
 import EventList from '@/components/EventList';
 import EventsOptions from '@/components/EventsOptions';
 import Graph from '@/components/Graph';
+import RefreshGraph from '@/components/RefreshGraph';
 import devState from '@/devState';
 
 export default {
@@ -30,6 +32,7 @@ export default {
     EventList,
     EventsOptions,
     Graph,
+    RefreshGraph,
   },
   mounted() {
     this.$store.replaceState(devState);
@@ -64,10 +67,11 @@ export default {
 
 body {
   font-family: "Source Sans Pro", sans-serif;
+  overflow: hidden;
 }
 
 .wrapper {
-  background-color: rgb(229, 229, 229);
+  background: radial-gradient(rgb(250, 250, 250), rgb(201, 201, 201));
   display: flex;
   flex-direction: row;
   width: 100vw;
@@ -105,8 +109,13 @@ body {
   height: 100%;
 }
 
-.of-scroll {
-  overflow-y: scroll;
+.refresh-graph-button {
+  margin: 10px auto;
+}
+
+.event-list {
+  margin: auto 0;
+  flex-grow: 1;
 }
 
 .graph-wrapper {
