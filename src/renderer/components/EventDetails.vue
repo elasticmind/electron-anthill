@@ -1,18 +1,23 @@
 <template>
-  <div>
-    <h1>
+  <panel>
+    <span slot="title">
       Details
-    </h1>
+    </span>
     <ul>
       <li v-for="(value, key) in event" :key="key">
         <span>{{ key }}: {{ value }}</span>
       </li>
     </ul>
-  </div>
+  </panel>
 </template>
 
 <script>
+import Panel from '@/components/Panel';
+
 export default {
+  components: {
+    Panel,
+  },
   props: {
     event: {
       type: Object,

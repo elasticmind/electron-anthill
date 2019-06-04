@@ -7,12 +7,8 @@
         <event-list class="event-list" :events="events"/>
       </div>
       <div class="w-half flex flex-v">
-        <div class="h-half">
-            <events-options />
-        </div>
-        <div class="h-half">
-          <event-details :event="selectedEvent" />
-        </div>
+        <events-options class="h-half"/>
+        <event-details class="h-half" :event="selectedEvent" />
       </div>
     </div>
   </div>

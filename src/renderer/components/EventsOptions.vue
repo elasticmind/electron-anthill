@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <label for="filterToggle">
-      <h1>
-        <input type="checkbox" id="filterToggle" v-model="filterToggle"/>
+  <panel>
+    <span slot="title">
+        <input type="checkbox" v-model="filterToggle"/>
         Filtering
-      </h1>
-    </label>
+    </span>
     <label for="channel-select">
       Channel:
       <select id="channel-select" v-model="selectedChannel" multiple>
@@ -24,11 +22,16 @@
       Max: {{ timestampMax }}<br>
       <input type="range" id="timestamp-max" v-model="timestampMax" :min="timestampMin" :max="timestampMaxUpperBound"/>
     </label>
-  </div>
+  </panel>
 </template>
 
 <script>
+import Panel from '@/components/Panel';
+
 export default {
+  components: {
+    Panel,
+  },
   computed: {
     filterToggle: {
       set(shouldFilter) {
