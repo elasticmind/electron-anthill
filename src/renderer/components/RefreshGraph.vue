@@ -18,7 +18,7 @@ export default {
   border: none;
   outline: none;
   border-radius: 10px;
-  background-color: rgb(37, 131, 37);
+  background-color: hsl(210, 97%, 45%);
   color: rgb(250, 250, 250);
   padding: 10px 30px;
   font-size: 1rem;
@@ -27,7 +27,7 @@ export default {
   transition: all 0.2s ease-out;
 
   &:hover {
-    background-color: hsl(120, 56%, 43%);
+    background-color: hsl(210, 97%, 55%);
   }
 }
 </style>
