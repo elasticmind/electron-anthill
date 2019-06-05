@@ -28,8 +28,8 @@ const getters = {
         && event.timestamp <= state.selectedMax;
     });
   },
-  graph(state, getters) {
-    return transformUtils.getSimplifiedData(getters.selectedEvents);
+  graph(state) {
+    return transformUtils.getSimplifiedData(state.selectedEvents);
   },
 };
 
