@@ -7,7 +7,7 @@
         <event-list class="event-list" :events="events"/>
       </div>
       <div class="w-half flex flex-v brd-l">
-        <events-options class="h-half"/>
+        <events-filters class="h-half"/>
         <event-details class="h-half" :event="firstSelectedEvent" />
       </div>
     </div>
@@ -17,7 +17,7 @@
 <script>
 import EventDetails from '@/components/EventDetails';
 import EventList from '@/components/EventList';
-import EventsOptions from '@/components/EventsOptions';
+import EventsFilters from '@/components/EventsFilters';
 import Graph from '@/components/Graph';
 import RefreshGraph from '@/components/RefreshGraph';
 
@@ -25,7 +25,7 @@ export default {
   components: {
     EventDetails,
     EventList,
-    EventsOptions,
+    EventsFilters,
     Graph,
     RefreshGraph,
   },

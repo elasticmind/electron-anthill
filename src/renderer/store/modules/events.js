@@ -3,10 +3,14 @@ import * as transformUtils from '../../../utils/transform';
 const state = {
   events: [],
   selectedEvents: [],
-  filterToggle: false,
-  selectedChannel: [],
-  selectedMin: 0,
-  selectedMax: 100,
+  filterToggles: {},
+  filterValues: {
+    channel: [],
+    timestamp: {
+      min: NaN,
+      max: NaN,
+    },
+  },
   options: {
     channel: [],
     timestamp: {
@@ -59,6 +63,12 @@ const mutations = {
   },
   setSelectedMax(state, timestamp) {
     state.selectedMax = timestamp;
+  },
+  updateFilterToggle(state, {filterToggle, value}) {
+    state.filterToggles[filterToggle] = value;
+  },
+  updateFilterValue(state, {filterValue, value}) {
+    state.filterValues[filterValue] = value;
   },
 };
 
