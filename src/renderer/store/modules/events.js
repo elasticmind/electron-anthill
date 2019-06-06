@@ -44,15 +44,15 @@ const getters = {
     };
 
     const categoryFilter = generateInclusionFilter('category');
-    // const subcategoryFilter = generateInclusionFilter('subcategory');
-    // const channelFilter = generateInclusionFilter('channel');
-    // const timestampFilter = generateRangeFilter('timestamp');
+    const subcategoryFilter = generateInclusionFilter('subcategory');
+    const channelFilter = generateInclusionFilter('channel');
+    const timestampFilter = generateRangeFilter('timestamp');
 
     const composedFilter = (event) => {
-      return categoryFilter(event);
-      /* && subcategoryFilter(event)
+      return categoryFilter(event)
+          && subcategoryFilter(event)
           && channelFilter(event)
-          && timestampFilter(event);*/
+          && timestampFilter(event);
     };
 
     return state.events.filter(composedFilter);
@@ -84,10 +84,10 @@ const mutations = {
     state.selectedChannel = channel;
   },
   setSelectedMin(state, timestamp) {
-    state.selectedMin = timestamp;
+    state.filterValues.timestamp.min = timestamp;
   },
   setSelectedMax(state, timestamp) {
-    state.selectedMax = timestamp;
+    state.filterValues.timestamp.min = timestamp;
   },
   updateFilterToggle(state, {filterToggle, value}) {
     state.filterToggles[filterToggle] = value;
