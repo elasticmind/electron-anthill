@@ -3,8 +3,15 @@ import * as transformUtils from '../../../utils/transform';
 const state = {
   events: [],
   selectedEvents: [],
-  filterToggles: {},
+  filterToggles: {
+    'category': false,
+    'subcategory': false,
+    'channel': false,
+    'timestamp': false,
+  },
   filterValues: {
+    category: [],
+    subcategory: [],
     channel: [],
     timestamp: {
       min: NaN,
@@ -12,6 +19,8 @@ const state = {
     },
   },
   options: {
+    category: [],
+    subcategory: [],
     channel: [],
     timestamp: {
       min: NaN,
@@ -22,15 +31,31 @@ const state = {
 
 const getters = {
   filteredEvents(state) {
-    if (!state.filterToggle) {
-      return state.events;
-    }
+    const trueFunction = () => true;
+    const generateInclusionFilter = (key) => {
+      return state.filterToggles[key]
+        ? (event) => state.filterValues[key].includes(event[key])
+        : trueFunction;
+    };
+    const generateRangeFilter = (key) => {
+      return state.filterToggles[key]
+        ? (event) => state.filterValues[key].min <= event[key] && event[key] <= state.filterValues[key].max
+        : trueFunction;
+    };
 
-    return state.events.filter((event) => {
-      return state.selectedChannel.includes(event.channel)
-        && state.selectedMin <= event.timestamp
-        && event.timestamp <= state.selectedMax;
-    });
+    const categoryFilter = generateInclusionFilter('category');
+    // const subcategoryFilter = generateInclusionFilter('subcategory');
+    // const channelFilter = generateInclusionFilter('channel');
+    // const timestampFilter = generateRangeFilter('timestamp');
+
+    const composedFilter = (event) => {
+      return categoryFilter(event);
+      /* && subcategoryFilter(event)
+          && channelFilter(event)
+          && timestampFilter(event);*/
+    };
+
+    return state.events.filter(composedFilter);
   },
   graph(state) {
     return transformUtils.getSimplifiedData(state.selectedEvents);

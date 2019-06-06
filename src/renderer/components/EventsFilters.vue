@@ -4,11 +4,11 @@
       Filters
     </span>
     <label>
-      <input type="checkbox" :value="filterToggles['channel']" @input="updateFilterToggle('channel', $event)"/>
-      Channel:
-      <select :value="filterValues['channel']" @input="updateFilterValue('channel', $event)" multiple>
-        <option v-for="channelItem in channel" :key="channelItem">
-          {{ channelItem }}
+      <input type="checkbox" :value="filterToggles['category']" @click="updateFilterToggle('category', !filterToggles['category'])"/>
+      Category:
+      <select :value="filterValues['category']" @change="updateFilterValue('category', $event)" multiple>
+        <option v-for="categoryItem in options.category" :key="categoryItem">
+          {{ categoryItem }}
         </option>
       </select>
     </label>
@@ -27,27 +27,20 @@ export default {
       return this.$store.state.events.filterToggles;
     },
     filterValues() {
-      console.log('pisti');
-      console.log(this.$store);
-
       return this.$store.state.events.filterValues;
     },
-    channel() {
-      return this.$store.state.events.options.channel;
-    },
-    timestampMinLowerBound() {
-      return this.$store.state.events.options.timestamp.min;
-    },
-    timestampMaxUpperBound() {
-      return this.$store.state.events.options.timestamp.max;
+    options() {
+      return this.$store.state.events.options;
     },
   },
   methods: {
-    updateFilterToggle(filterToggle, event) {
-      this.$store.commit('updateFilterToggle', {filterToggle, value: event.data});
+    updateFilterToggle(filterToggle, value) {
+      this.$store.commit('updateFilterToggle', {filterToggle, value});
     },
     updateFilterValue(filterValue, event) {
-      this.$store.commit('updateFilterValue', {filterValue, value: event.data});
+      const selectedOptions = Array.prototype.filter.call(event.target.options, (option) => option.selected);
+      const selectedLabels = Array.prototype.map.call(selectedOptions, (option) => option.label);
+      this.$store.commit('updateFilterValue', {filterValue, value: selectedLabels});
     },
   },
 };
