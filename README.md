@@ -1,25 +1,49 @@
 # electron-anthill
 
-> An electron-vue project
+> A simple Electron application that enables you to visualize communication of event emitters.
 
-#### Build Setup
+#### Usage in an Electron application
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:9080
-npm run dev
-
-# build electron application for production
-npm run build
-
-
-# lint all JS/Vue component files in `src/`
-npm run lint
-
+After installing the `electron-anthill` package, paste the following into your `main/index.js`.
+```js
+const anthill = __non_webpack_require__('electron-anthill');
+anthill.init();
+anthill.register({
+  source: ipcMain,
+  method: 'on',
+  category: 'Main',
+  subcategory: 'on',
+  interceptionStrategyName: anthill.interceptionStrategyNames.on,
+});
 ```
 
----
+```js
+anthill.register({
+  source: mainWindow.webContents,
+  method: 'send',
+  category: 'Main',
+  subcategory: 'send',
+  interceptionStrategyName: anthill.interceptionStrategyNames.send,
+});
+```
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[8fae476](https://github.com/SimulatedGREG/electron-vue/tree/8fae4763e9d225d3691b627e83b9e09b56f6c935) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+After, in your `renderer/main.js` paste the following:
+```js
+const anthill = __non_webpack_require__('electron-anthill');
+anthill.register({
+  source: ipcRenderer,
+  method: 'on',
+  category: 'Renderer',
+  subcategory: 'on',
+  interceptionStrategyName: anthill.interceptionStrategyNames.on,
+});
+anthill.register({
+  source: ipcRenderer,
+  method: 'send',
+  category: 'Renderer',
+  subcategory: 'send',
+  interceptionStrategyName: anthill.interceptionStrategyNames.send,
+});
+```
+
+Running your application will now start up Electron Anthill and you shall see and anaylize the communications in your software.
