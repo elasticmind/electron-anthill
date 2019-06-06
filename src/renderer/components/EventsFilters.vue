@@ -5,8 +5,9 @@
     </span>
     <label>
       <input type="checkbox" :value="filterToggles['category']" @click="updateFilterToggle('category', !filterToggles['category'])"/>
-      Category:
-      <select :value="filterValues['category']" @change="updateFilterValue('category', $event)" multiple>
+      <span class="key">Category:</span>
+      <br>
+      <select class="wide-select" :value="filterValues['category']" @change="updateFilterValue('category', $event)" multiple>
         <option v-for="categoryItem in options.category" :key="categoryItem">
           {{ categoryItem }}
         </option>
@@ -14,8 +15,9 @@
     </label>
     <label>
       <input type="checkbox" :value="filterToggles['subcategory']" @click="updateFilterToggle('subcategory', !filterToggles['subcategory'])"/>
-      Subcategory:
-      <select :value="filterValues['subcategory']" @change="updateFilterValue('subcategory', $event)" multiple>
+      <span class="key">Subcategory:</span>
+      <br>
+      <select class="wide-select" :value="filterValues['subcategory']" @change="updateFilterValue('subcategory', $event)" multiple>
         <option v-for="subcategoryItem in options.subcategory" :key="subcategoryItem">
           {{ subcategoryItem }}
         </option>
@@ -23,8 +25,9 @@
     </label>
     <label>
       <input type="checkbox" :value="filterToggles['channel']" @click="updateFilterToggle('channel', !filterToggles['channel'])"/>
-      Channel:
-      <select :value="filterValues['channel']" @change="updateFilterValue('channel', $event)" multiple>
+      <span class="key">Channel:</span>
+      <br>
+      <select class="wide-select" :value="filterValues['channel']" @change="updateFilterValue('channel', $event)" multiple>
         <option v-for="channelItem in options.channel" :key="channelItem">
           {{ channelItem }}
         </option>
@@ -32,14 +35,17 @@
     </label>
     <label>
       <input type="checkbox" :value="filterToggles['timestamp']" @click="updateFilterToggle('timestamp', !filterToggles['timestamp'])"/>
-      Timestamp:
+      <span class="key">Timestamp:</span>
+      <br>
       <label for="timestamp-min">
-        Min: {{ timestampMin }}<br>
+        Min: {{ timestampMin }}
+        <br>
         <input type="range" id="timestamp-min" v-model="timestampMin" :min="timestampMinLowerBound" :max="timestampMax"/>
       </label>
       <br>
       <label for="timestamp-max">
-        Max: {{ timestampMax }}<br>
+        Max: {{ timestampMax }}
+        <br>
         <input type="range" id="timestamp-max" v-model="timestampMax" :min="timestampMin" :max="timestampMaxUpperBound"/>
       </label>
     </label>
@@ -102,5 +108,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.key {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.wide-select {
+  width: 100%;
+}
 </style>

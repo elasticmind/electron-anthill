@@ -7,8 +7,8 @@
         <event-list class="event-list" :events="events"/>
       </div>
       <div class="w-half flex flex-v brd-l">
-        <events-filters class="h-half"/>
-        <event-details class="h-half" :event="firstSelectedEvent" />
+        <events-filters class="h-fill"/>
+        <event-details class="h-quarter" :event="firstSelectedEvent" />
       </div>
     </div>
   </div>
@@ -95,6 +95,14 @@ body {
 
 .w-half {
   width: 50%;
+}
+
+.h-quarter {
+  height: 25%;
+}
+
+.h-fill {
+  flex-grow: 1;
 }
 
 .h-half {
