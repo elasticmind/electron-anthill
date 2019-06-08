@@ -3,7 +3,7 @@
     <graph :key="graphRenderCount"/>
     <div class="w-half flex flex-h bg-dark">
       <div class="w-half flex flex-v brd-l">
-        <refresh-graph class="refresh-graph-button"/>
+        <refresh-graph class="refresh-graph"/>
         <event-list class="event-list" :events="events"/>
       </div>
       <div class="w-half flex flex-v brd-l">
@@ -42,7 +42,7 @@ export default {
       return this.$store.state.events.selectedEvents[0] || {};
     },
     graphRenderCount() {
-      return this.$store.state.graph.graphRenderCount;
+      return this.$store.state.refreshGraph.graphRenderCount;
     },
   },
 };
@@ -117,7 +117,7 @@ body {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.refresh-graph-button {
+.refresh-graph {
   margin: 10px auto;
 }
 

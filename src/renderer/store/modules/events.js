@@ -57,8 +57,8 @@ const getters = {
 
     return state.events.filter(composedFilter);
   },
-  graph(state) {
-    return transformUtils.getSimplifiedData(state.selectedEvents);
+  graph(state, getters, rootState) {
+    return transformUtils.getSimplifiedData(rootState.refreshGraph.visualizeSelectionOnly ? state.selectedEvents : getters.filteredEvents);
   },
 };
 
