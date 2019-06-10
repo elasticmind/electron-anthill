@@ -51,8 +51,7 @@ let saveLogPath;
 
 ipcMain.on(events.EVENTS_AND_SAVE, (event, events) => {
   if (saveLogPath) {
-    console.log(logHelper.transformEvents(events));
-    fs.writeFile(saveLogPath, logHelper.transformEvents(events));
+    fs.writeFileSync(saveLogPath, logHelper.transformEvents(events));
   }
 });
 
