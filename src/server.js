@@ -85,7 +85,7 @@ function register({source, method, category, subcategory, interceptionStrategyNa
   console.log(`Registering ${method} of ${source}:
     category: ${category},
     subcategory: ${subcategory},
-    interception strategy: ${interceptionStrategy}.`);
+    interception strategy: ${interceptionStrategy.name}.`);
   source[method] = interceptionStrategy(source[method]);
 }
 

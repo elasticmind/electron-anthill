@@ -185,7 +185,7 @@ export default {
     });
 
     link.append('title').text(function(d) {
-      return d.channel;
+      return d.source.channel;
     });
 
     simulation
