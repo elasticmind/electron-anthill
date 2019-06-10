@@ -35,7 +35,7 @@ let rendererConfig = {
         use: [{
           loader: path.resolve(__dirname, '..', 'node_modules', 'vue-style-loader', 'index.js'),
         }, {
-          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'index.js'),
+          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'dist', 'cjs.js'),
         }, 'sass-loader']
       },
       {
@@ -43,7 +43,7 @@ let rendererConfig = {
         use: [{
           loader: path.resolve(__dirname, '..', 'node_modules', 'vue-style-loader', 'index.js'),
         }, {
-          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'index.js'),
+          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'dist', 'cjs.js'),
         }, 'sass-loader?indentedSyntax']
       },
       {
@@ -51,7 +51,7 @@ let rendererConfig = {
         use: [{
           loader: path.resolve(__dirname, '..', 'node_modules', 'vue-style-loader', 'index.js'),
         }, {
-          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'index.js'),
+          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'dist', 'cjs.js'),
         }, 'less-loader']
       },
       {
@@ -59,7 +59,7 @@ let rendererConfig = {
         use: [{
           loader: path.resolve(__dirname, '..', 'node_modules', 'vue-style-loader', 'index.js'),
         }, {
-          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'index.js'),
+          loader: path.resolve(__dirname, '..', 'node_modules', 'css-loader', 'dist', 'cjs.js'),
         }]
       },
       {

@@ -1,6 +1,8 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parserOptions: {
+    "parser": "babel-eslint"
+  },
   parserOptions: {
     sourceType: 'module'
   },
@@ -8,7 +10,7 @@ module.exports = {
     browser: true,
     node: true
   },
-  extends: 'google',
+  extends: ["plugin:vue/base", 'google'],
   globals: {
     __static: true
   },

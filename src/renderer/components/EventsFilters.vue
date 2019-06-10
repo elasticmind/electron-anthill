@@ -7,17 +7,20 @@
       <input type="checkbox" :value="filterToggles['category']" @click="updateFilterToggle('category', !filterToggles['category'])"/>
       <span class="key">Category:</span>
       <br>
-      <select :disabled="!filterToggles['category']" class="wide-select" :value="filterValues['category']" @change="updateFilterValue('category', $event)" multiple>
+      <select :disabled="!filterToggles['category']" class="wide-select" :value="filterValues['category']"
+        @change="updateFilterValue('category', $event)" multiple>
         <option v-for="categoryItem in options.category" :key="categoryItem">
           {{ categoryItem }}
         </option>
       </select>
     </label>
     <label>
-      <input type="checkbox" :value="filterToggles['subcategory']" @click="updateFilterToggle('subcategory', !filterToggles['subcategory'])"/>
+      <input type="checkbox" :value="filterToggles['subcategory']"
+        @click="updateFilterToggle('subcategory', !filterToggles['subcategory'])"/>
       <span class="key">Subcategory:</span>
       <br>
-      <select :disabled="!filterToggles['subcategory']" class="wide-select" :value="filterValues['subcategory']" @change="updateFilterValue('subcategory', $event)" multiple>
+      <select :disabled="!filterToggles['subcategory']" class="wide-select" :value="filterValues['subcategory']"
+        @change="updateFilterValue('subcategory', $event)" multiple>
         <option v-for="subcategoryItem in options.subcategory" :key="subcategoryItem">
           {{ subcategoryItem }}
         </option>
@@ -27,7 +30,8 @@
       <input type="checkbox" :value="filterToggles['channel']" @click="updateFilterToggle('channel', !filterToggles['channel'])"/>
       <span class="key">Channel:</span>
       <br>
-      <select :disabled="!filterToggles['channel']" class="wide-select" :value="filterValues['channel']" @change="updateFilterValue('channel', $event)" multiple>
+      <select :disabled="!filterToggles['channel']" class="wide-select" :value="filterValues['channel']"
+        @change="updateFilterValue('channel', $event)" multiple>
         <option v-for="channelItem in options.channel" :key="channelItem">
           {{ channelItem }}
         </option>
@@ -40,13 +44,15 @@
       <label for="timestamp-min">
         Min: {{ timestampMin }}
         <br>
-        <input :disabled="!filterToggles['timestamp']" type="range" id="timestamp-min" v-model="timestampMin" :min="timestampMinLowerBound" :max="timestampMax"/>
+        <input :disabled="!filterToggles['timestamp']" type="range" id="timestamp-min" v-model="timestampMin"
+          :min="timestampMinLowerBound" :max="timestampMax"/>
       </label>
       <br>
       <label for="timestamp-max">
         Max: {{ timestampMax }}
         <br>
-        <input :disabled="!filterToggles['timestamp']" type="range" id="timestamp-max" v-model="timestampMax" :min="timestampMin" :max="timestampMaxUpperBound"/>
+        <input :disabled="!filterToggles['timestamp']" type="range" id="timestamp-max" v-model="timestampMax"
+          :min="timestampMin" :max="timestampMaxUpperBound"/>
       </label>
     </label>
   </panel>
