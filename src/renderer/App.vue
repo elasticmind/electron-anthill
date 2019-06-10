@@ -1,13 +1,18 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <Anthill />
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'electron-anthill',
-  };
+import Main from '@/components/Main';
+
+export default {
+  name: 'electron-anthill',
+  components: {
+    Anthill: Main,
+  },
+};
 </script>
 
 <style>

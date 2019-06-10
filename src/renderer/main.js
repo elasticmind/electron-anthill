@@ -3,7 +3,6 @@ import axios from 'axios';
 import * as events from '../events';
 
 import App from './App';
-import router from './router';
 import store from './store';
 import {ipcRenderer} from 'electron';
 
@@ -14,7 +13,6 @@ Vue.config.productionTip = false;
 /* eslint-disable no-new */
 new Vue({
   components: {App},
-  router,
   store,
   template: '<App/>',
 }).$mount('#app');
