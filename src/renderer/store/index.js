@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import * as transformUtils from '../../utils/transform';
+import * as transformUtils from '../transform';
 
 Vue.use(Vuex);
 

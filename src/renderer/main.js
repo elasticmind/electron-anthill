@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import * as events from '../events';
+import * as events from '../common/events';
 
 import App from './App';
 import store from './store';

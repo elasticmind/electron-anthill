@@ -1,6 +1,6 @@
 const {performance} = require('perf_hooks');
 const {init, interceptionStrategyNames} = require('./server');
-const {post} = require('./helper');
+const {post} = require('./HTTPHelper');
 let i = 0;
 
 (async function test() {

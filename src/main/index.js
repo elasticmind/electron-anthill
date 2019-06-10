@@ -1,7 +1,7 @@
 import {app, BrowserWindow, Menu, dialog, ipcMain} from 'electron';
 import fs from 'fs';
 import * as logHelper from './logHelper';
-import * as events from '../events';
+import * as events from '../common/events';
 
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');

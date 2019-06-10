@@ -4,13 +4,13 @@ const {spawn, fork} = require('child_process');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const {performance} = require('perf_hooks');
-const {post} = require('./helper');
+const {post} = require('./HTTPHelper');
 
 let electronProcess;
 let server;
 
 function init() {
-  server = fork(path.resolve(__dirname, 'restApi.js'));
+  server = fork(path.resolve(__dirname, 'backend.js'));
 
   return start();
 }
