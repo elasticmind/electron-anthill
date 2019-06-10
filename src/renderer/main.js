@@ -20,7 +20,7 @@ new Vue({
 }).$mount('#app');
 
 ipcRenderer.on(events.GET_EVENTS, () => {
-  ipcRenderer.send(events.EVENTS_AND_SAVE, store.state.events.events);
+  ipcRenderer.send(events.EVENTS_AND_SAVE, store.state.events);
 });
 
 const pollInterval = 300;

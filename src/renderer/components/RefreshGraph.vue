@@ -21,7 +21,7 @@ export default {
         this.$store.commit('setVisualizeSelectionOnly', flag);
       },
       get() {
-        return this.$store.state.refreshGraph.visualizeSelectionOnly;
+        return this.$store.state.visualizeSelectionOnly;
       },
     },
   },

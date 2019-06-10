@@ -39,10 +39,10 @@ export default {
       return this.$store.getters.filteredEvents;
     },
     firstSelectedEvent() {
-      return this.$store.state.events.selectedEvents[0] || {};
+      return this.$store.state.selectedEvents[0] || {};
     },
     graphRenderCount() {
-      return this.$store.state.refreshGraph.graphRenderCount;
+      return this.$store.state.graphRenderCount;
     },
   },
 };

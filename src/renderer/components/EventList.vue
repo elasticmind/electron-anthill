@@ -31,7 +31,7 @@ export default {
         this.$store.commit('setSelectedEvents', events);
       },
       get() {
-        return this.$store.state.events.selectedEvents;
+        return this.$store.state.selectedEvents;
       },
     },
   },

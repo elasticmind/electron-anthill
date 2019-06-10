@@ -61,20 +61,20 @@ export default {
   },
   computed: {
     filterToggles() {
-      return this.$store.state.events.filterToggles;
+      return this.$store.state.filterToggles;
     },
     filterValues() {
-      return this.$store.state.events.filterValues;
+      return this.$store.state.filterValues;
     },
     options() {
-      return this.$store.state.events.options;
+      return this.$store.state.options;
     },
     timestampMin: {
       set(timestamp) {
         this.$store.commit('setSelectedMin', timestamp);
       },
       get() {
-        return this.$store.state.events.filterValues.timestamp.min;
+        return this.$store.state.filterValues.timestamp.min;
       },
     },
     timestampMax: {
@@ -82,17 +82,17 @@ export default {
         this.$store.commit('setSelectedMax', timestamp);
       },
       get() {
-        return this.$store.state.events.filterValues.timestamp.max;
+        return this.$store.state.filterValues.timestamp.max;
       },
     },
     channel() {
-      return this.$store.state.events.options.channel;
+      return this.$store.state.options.channel;
     },
     timestampMinLowerBound() {
-      return this.$store.state.events.options.timestamp.min;
+      return this.$store.state.options.timestamp.min;
     },
     timestampMaxUpperBound() {
-      return this.$store.state.events.options.timestamp.max;
+      return this.$store.state.options.timestamp.max;
     },
   },
   methods: {
