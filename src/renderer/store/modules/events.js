@@ -14,8 +14,8 @@ const state = {
     subcategory: [],
     channel: [],
     timestamp: {
-      min: NaN,
-      max: NaN,
+      min: 0,
+      max: 0,
     },
   },
   options: {
@@ -23,8 +23,8 @@ const state = {
     subcategory: [],
     channel: [],
     timestamp: {
-      min: NaN,
-      max: NaN,
+      min: 0,
+      max: 0,
     },
   },
 };
@@ -87,7 +87,7 @@ const mutations = {
     state.filterValues.timestamp.min = timestamp;
   },
   setSelectedMax(state, timestamp) {
-    state.filterValues.timestamp.min = timestamp;
+    state.filterValues.timestamp.max = timestamp;
   },
   updateFilterToggle(state, {filterToggle, value}) {
     state.filterToggles[filterToggle] = value;

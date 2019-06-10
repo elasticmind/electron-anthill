@@ -82,7 +82,7 @@ export default {
         this.$store.commit('setSelectedMax', timestamp);
       },
       get() {
-        return this.$store.state.events.filterValues.timestamp.min;
+        return this.$store.state.events.filterValues.timestamp.max;
       },
     },
     channel() {
