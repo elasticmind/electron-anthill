@@ -61,7 +61,7 @@
     "d3": "^5.9.2",
     "eslint-plugin-vue": "^5.2.2",
     "express": "^4.17.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "request": "^2.88.0",
     "vue": "^2.6.10",
     "vue-electron": "^1.0.6",
